@@ -44,6 +44,13 @@
 #define GPIO_PORT_H  GPIOH
 #define GPIO_PORT_I  GPIOI
 
+
+typedef enum
+{
+	INT_RISING_EDGE,
+	INT_FALLING_EDGE,
+	INT_RISING_FALLING_EDGE
+}int_edge_sel_t;
 //MACROS TO ENABLE CLOCK FOR DIFFETENT GPIO POPRT IN RCC REGISTRE
 
 #define _HAL_RCC_GPIOA_CLK_ENABLE()  (RCC->AHB1ENR |= (1<<0))
@@ -87,6 +94,16 @@ void hal_gpio_init(GPIO_TypeDef *GPIOx, gpio_pin_conf_t *gpio_pin_conf);
 uint8_t hal_gpio_read_from_pin(GPIO_TypeDef *GPIOx,uint16_t pin_no);
 void hal_gpio_write_to_pin(GPIO_TypeDef *GPIOx,uint16_t pin_no,uint8_t val);
 void hal_gpio_set_alt_function(GPIO_TypeDef *GPIOx,uint16_t pin_no,uint16_t alt_fun_value);
+
+
+/*-----------------------------------------------------------
+	
+	configure the handlers
+----------------------------------------------------------------------*/
+
+void hal_gpio_configure_interrupt(uint16_t pin_no, int_edge_sel_t edge_sel);
+void hal_gpio_enable_interrupt(uint16_t pin_no, IRQn_Type	irq_no);  //enable the interrupt
+void hal_gpio_clear_interrupt(uint16_t pin);  //clear the interrupt
 
 #endif
 

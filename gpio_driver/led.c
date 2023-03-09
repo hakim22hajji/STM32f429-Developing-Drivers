@@ -50,6 +50,17 @@ int main(void)
 	
 	led_init();
 	
+	//Enable the clock GPIO port for the button
+	
+	_HAL_RCC_GPIOA_CLK_ENABLE() ;
+	/*CONFIGURE THE BUTTON INTERRUPT AS FALLING EDGE */
+	hal_gpio_configure_interrupt(GPIO_BUTTON_PIN, INT_FALLING_EDGE);
+
+	//ENABLE THE INTERRUPT ON EXT0 LINE
+	
+	hal_gpio_enable_interrupt(GPIO_BUTTON_PIN,EXTI0_IRQn);
+
+
 	while(1)
 	{
 		led_turn_on(GPIOG,LED_GREEN);
@@ -63,5 +74,16 @@ int main(void)
 		led_turn_on(GPIOG,LED_GREEN);
 		for(i=0; i<500000;i++);
 	}
+
+
+}
+
+void EXTI0_IRQHandler(void)
+{
+	hal_gpio_clear_interrupt(GPIO_BUTTON_PIN);
+	//task to be done by interruption
+	led_toggle(GPIOD, LED_GREEN);
+	led_toggle(GPIOD, LED_RED);
+	
 }
 

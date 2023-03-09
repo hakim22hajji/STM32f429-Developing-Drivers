@@ -86,3 +86,36 @@ void hal_gpio_set_alt_function(GPIO_TypeDef *GPIOx,uint16_t pin_no,uint16_t alt_
 	
 	hal_gpio_set_alt_fun(GPIOx,pin_no,alt_fun_value);
 }
+
+
+//configure the interrupt 
+
+void hal_gpio_configure_interrupt(uint16_t pin_no, int_edge_sel_t edge_sel)
+{
+	if(edge_sel == INT_RISING_EDGE)
+	{
+		EXTI->RTSR |= (1<<pin_no);
+	}
+	else if(edge_sel == INT_FALLING_EDGE)
+	{
+		EXTI->FTSR|= (1<<pin_no);
+	}
+	else
+	{
+		EXTI->FTSR|= (1<<pin_no);
+		EXTI->RTSR |= (1<<pin_no);
+	}
+}
+
+void hal_gpio_enable_interrupt(uint16_t pin_no, IRQn_Type	irq_no)
+{
+	EXTI->IMR |= 1<<pin_no;
+	NVIC_EnableIRQ(irq_no);
+}
+void hal_gpio_clear_interrupt(uint16_t pin)
+{
+	if(!(EXTI->PR & 1<<pin))
+	{
+		EXTI->PR |= 1<<pin;
+	}
+}

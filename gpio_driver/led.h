@@ -7,11 +7,13 @@
 #define GPIO_PIN_13 		13
 #define GPIO_PIN_14 		14
 
+#define GPIO_PIN_0 		0
 
 
 #define LED_GREEN		GPIO_PIN_13
 #define LED_RED		  GPIO_PIN_14
 
+#define GPIO_BUTTON_PIN GPIO_PIN_0
 
 void led_init(void);
 
